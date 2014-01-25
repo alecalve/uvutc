@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}UV - UTC{% endblock %}
+{% block header %}
+<div class="top clearfix">
+  <span><a href="#" class="filter" data-to="places" data-name="effectif">Filtre effectif : <i>supérieur à</i></a></span>
+  <span><a href="#" class="filter" data-to="note" data-name="note">Filtre note : <i>supérieur à</i></a></span>
+  <span><a href="#" id="nb"></a></span>
+  <span class="right"><a href="#" id="trigger">Connecté en tant que : {{user.username}}</a></span>
+</div>
+{% endblock %}
+{% block content %}
+<div class="block table block100">
+  <table id="table">
+    <thead>
+      <tr>
+        <th><input class="table-input" data-filter="code" type="search" placeholder="Code" value=""></th>
+        <th><input class="table-input" data-filter="cat" type="search" placeholder="Type" value=""></th>
+        <th><input class="table-input" data-filter="nom" type="search" placeholder="Nom" value=""></th>
+        <th><input class="table-input" data-filter="resp" type="search" placeholder="Responsable" value=""></th>
+        <th><input class="table-input" data-filter="branches" data-type="array" type="search" placeholder="Branche" value=""></th>
+        <th><input class="table-input" data-filter="semestres" data-type="array" type="search" placeholder="Enseignée en" value=""></th>
+        <th><input class="table-input" data-filter="tp" type="search" placeholder="TP" value=""></th>
+        <th><input class="table-input" data-filter="ects" type="search" placeholder="Crédits" value=""></th>
+        <th><input class="table-input" data-filter="final" type="search" placeholder="Final" value=""></th>
+        <th><input class="table-input" id="places" data-filter="places" data-comp="sup" data-type="number" type="search" placeholder="Effectif" value=""></th>
+        <th><input class="table-input" id="note" data-filter="note" data-type="number" data-comp="sup" type="search" placeholder="Note/20" value=""></th>
+        <th>UVweb</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</div>
+
+<script type="text/javascript">
+  
+  $(document).ready(function () {
+    refresh(filtre());
+    $(".table-input").each(function () {
+      if ($(this).data("comp") != undefined)
+        $(this).data("comp", "sup");
+    });
+  });
+
+  $(".filter").click(function () {
+    var parent = $("#"+$(this).data("to"));
+    var comp = parent.data("comp");
+    parent.data("comp", (comp == "sup") ? "inf" : "sup");
+    if (comp == "sup") {
+      $(this).html("Filtre " + $(this).data("name") + ": <i>inférieur à</i>");
+    } else {
+      $(this).html("Filtre " + $(this).data("name") + ": <i>supérieur à</i>");
+    }
+    refresh(filtre());
+  });
+
+  $(".table-input").keyup(function (e) {
+    refresh(filtre());
+  });
+  </script>
+{% endblock %}
+

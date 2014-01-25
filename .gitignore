@@ -1,0 +1,6 @@
+db
+data/*
+*.pyc
+*~
+uvutc/settings.py
+*.json
