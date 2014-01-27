@@ -2,14 +2,16 @@
 {% block title %}UV - UTC{% endblock %}
 {% block header %}
 <div class="top clearfix">
-  <span><a href="#" class="filter" data-to="places" data-name="effectif">Filtre effectif : <i>supérieur à</i></a></span>
-  <span><a href="#" class="filter" data-to="note" data-name="note">Filtre note : <i>supérieur à</i></a></span>
-  <span><a href="#" id="nb"></a></span>
+  <span class="main"><a href="#" class="filter" data-to="places" data-name="effectif">Filtre effectif : <i>supérieur à</i></a></span>
+  <span class="main"><a href="#" class="filter" data-to="note" data-name="note">Filtre note : <i>supérieur à</i></a></span>
+  <span class="main"><a href="#" id="nb"></a></span>
+  <span class="aux" id="close"><a href="#">Fermer</a></span>
+  <span class="aux" id="titre"></span>
   <span class="right"><a href="#" id="trigger">Connecté en tant que : {{user.username}}</a></span>
 </div>
 {% endblock %}
 {% block content %}
-<div class="block table block100">
+<div class="block table block100" id="main">
   <table id="table">
     <thead>
       <tr>
@@ -25,6 +27,7 @@
         <th><input class="table-input" id="places" data-filter="places" data-comp="sup" data-type="number" type="search" placeholder="Effectif" value=""></th>
         <th><input class="table-input" id="note" data-filter="note" data-type="number" data-comp="sup" type="search" placeholder="Note/20" value=""></th>
         <th>UVweb</th>
+        <th>Plus d’infos</th>
       </tr>
     </thead>
     <tbody>
@@ -32,9 +35,14 @@
   </table>
 </div>
 
+<div class="block block-center" id="aux">
+
+</div>
+
 <script type="text/javascript">
   
   $(document).ready(function () {
+    $(".aux").hide();
     refresh(filtre());
     $(".table-input").each(function () {
       if ($(this).data("comp") != undefined)
@@ -57,6 +65,35 @@
   $(".table-input").keyup(function (e) {
     refresh(filtre());
   });
+
+  $("#close").click(function () {
+    $("#aux").hide();
+    $("#main").fadeIn(1000);
+    $(".aux").hide();
+    $("#aux").empty();
+    $(".main").show();
+  });
+  
+  $(document).on('click', ".more a", function() {
+    var uv = $(this).data("to");
+    barChart(getEvals(uvs[uv], "appr"), "#aux", "Appréciation"); 
+    barChart(getEvals(uvs[uv], "t"), "#aux", "Travail");
+    barChart(getEvals(uvs[uv], "prereq"), "#aux", "Prérequis");
+    barChart(getEvals(uvs[uv], "clarte"), "#aux", "Clarté");
+    barChart(getEvals(uvs[uv], "equipe"), "#aux", "Équipe");
+    barChart(getEvals(uvs[uv], "cohe"), "#aux", "Cohérence");
+    barChart(getEvals(uvs[uv], "eval"), "#aux", "Évaluation");
+    barChart(getEvals(uvs[uv], "moyens"), "#aux", "Moyens");
+    barChart(getEvals(uvs[uv], "supp"), "#aux", "Supports");
+    barChart(getEvals(uvs[uv], "r"), "#aux", "Réponses", false, true);
+    $(".main").hide();
+    $("#main").hide();
+    $("#titre").text("  UV affichée : " + uv);
+    $("#aux").fadeIn(1000);
+    $(".aux").show();
+  });
+
+
   </script>
 {% endblock %}
 

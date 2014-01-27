@@ -6,3 +6,7 @@ from django.contrib.auth.decorators import login_required
 @login_required
 def index(request):
     return render(request, 'consult/index.html', locals())
+
+@login_required
+def uv(request, code):
+    return render(request, 'consult/uv.html', locals())

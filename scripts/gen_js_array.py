@@ -17,6 +17,6 @@ for uv in uvs:
     uvs[uv]["evaluations"] = getevals(uv)
 
 with codecs.open(sys.argv[3], "w") as f:
-    f.write("var uvs = " + json.dumps(uvs, indent=1) + ";")
+    f.write("var uvs = " + json.dumps(uvs) + ";")
 
 

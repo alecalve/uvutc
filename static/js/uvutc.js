@@ -42,7 +42,7 @@ var filtres = {
 
 function compute_note(uv) {
   var note = 0;
-  var evals = uv["evaluations"];
+  var evals = uv["evals"];
 
   if (evals.length == 0) {
     return "Non évaluée";
@@ -52,30 +52,43 @@ function compute_note(uv) {
 
   for(var i=0;i<evals.length;i++) {
     var e = evals[i];
-    nbe += parseInt(e["reponses"]);
-    note += parseInt(e["reponses"])*parseFloat(e["appreciation"]);
+    nbe += parseInt(e["r"]);
+    note += parseInt(e["r"])*parseFloat(e["appr"]);
   }
 
   return (note/nbe).toFixed(2) + " (" + nbe + ")";
 }
 
+function updateNoteColor () {
+  $(".note").each(function () {
+    var note = parseFloat($(this).text().split(" ")[0]);
+    if ($(this).text() == "Non évaluée") {
+      return;
+    }
+    if (note > 15) {
+      $(this).addClass("good");
+    } else if (note > 12) {
+      $(this).addClass("bad");
+    } else {
+      $(this).addClass("ugly");
+    }
+  });
+}
+
 function uv_string(uv) {
   var str = "<tr class="+ uv["cat"].toLowerCase() +">";
-  var aff = ["code", "cat", "nom", "resp", "branches", "semestres", "tp", "ects", "final", "places"];
+  var aff = ["code", "cat", "nom", "resp", "branches", "s", "tp", "ects", "final", "p"];
   for(var i=0;i<aff.length;i++) {
     var content = uv[aff[i]];
     if (jQuery.isArray(content)) {
-      var chaine = content[0];
-      for(var j=1;j<content.length;j++) {
-        chaine += " "+content[j];
-      }
-      content = chaine;
+      content = content.join(" ");
     }
       
-    str += "<td>"+ content +"</td>";
+    str += "<td class='"+ aff[i]+"'>"+ content +"</td>";
   }
-  str += "<td>"+ compute_note(uv) +"</td>";
-  str += "<td><a target='_blank' href='https://assos.utc.fr/uvweb/uv/"+ uv["code"]+"'>ici</a></td></tr>";
+  str += "<td class='note'>"+ compute_note(uv) +"</td>";
+  str += "<td><a target='_blank' href='https://assos.utc.fr/uvweb/uv/"+ uv["code"]+"'>ici</a></td>";
+  str += "<td class='more'><a data-to='"+  uv["code"] + "'href='#'>+</a></td></tr>";
   return str;
 }
 
@@ -85,6 +98,7 @@ function refresh(liste) {
     $("#table tbody").append(uv_string(liste[uv]));
   }
   $("#nb").text(Object.keys(liste).length + " uv(s) affichées");
+  updateNoteColor();
 }
   
 function filtre() {
@@ -127,4 +141,120 @@ function filtre() {
     }
   }
   return arr;
+}
+
+function sortBySemestre(x, y) {
+  ax = parseInt(x["semestre"].slice(-2));
+  ay = parseInt(y["semestre"].slice(-2));
+  if (ax == ay) {
+      if (x["semestre"][0] == "P") {
+          return -1
+      } else {
+          return 1
+      }
+  } else {
+      return ax - ay;
+  }
+}
+
+function getEvals(data, item) {
+  var appreciations = [];
+  var evals = data["evals"];
+  for (var i in evals) {
+    appreciations[appreciations.length] = {"note": evals[i][item], "semestre": evals[i]["s"]};
+  }
+  return appreciations.sort(sortBySemestre);
+}
+
+function barChart(data, selector, titre, colorize, custom_scale) {
+  if (data.length == 0) {
+    return;
+  }
+
+  var ydomain = 20;
+
+  var max = function(data) {
+    var m = data[0]["note"];
+    for (var i in data) {
+      m = (data[i]["note"] > m) ? data[i]["note"] : m;
+    }
+    
+    return m;
+  }
+
+  if (custom_scale) {
+    ydomain = max(data);
+  }
+
+  
+  var margin = {top: 20, right: 20, bottom: 30, left: 40},
+      width = 350 - margin.left - margin.right,
+      height = 300 - margin.top - margin.bottom,
+      y = d3.scale.linear().domain([ydomain, 0]).range([0 , height]),
+      x = d3.scale.ordinal().rangeRoundBands([0, width], .1);;
+
+  var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+  var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(10);
+
+    
+  var svg = d3.select(selector).append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      
+  x.domain(data.map(function(d) { return d["semestre"]; }));
+
+  svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(xAxis);
+
+  svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Note");
+
+  svg.append("g")
+    .attr("class", "title")
+    .append("text")
+      .attr("y", -margin.top + 1)
+      .attr("x", width/2)
+      .attr("dy", ".71em")
+      .attr("dx", "2em")
+      .style("text-anchor", "end")
+      .text(titre);
+
+  var color = function(d) {
+    if (!colorize) {
+      return "bar";
+    }
+    if (d.note > 15) {
+      return "bar good";
+    } else if (d.note > 12) {
+      return "bar bad";
+    } else {
+      return "bar ugly";
+    }
+  }
+  
+  svg.selectAll(".bar")
+    .data(data)
+    .enter().append("rect")
+      .attr("class", function (d) {return color(d);})
+      .attr("x", function(d) { return x(d.semestre); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.note); })
+      .attr("height", function(d) { return height - y(d.note); });
 }
