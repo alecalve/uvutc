@@ -77,7 +77,7 @@ function updateNoteColor () {
 
 function uv_string(uv) {
   var str = "<tr class="+ uv["cat"].toLowerCase() +">";
-  var aff = ["code", "cat", "nom", "resp", "branches", "s", "tp", "ects", "final", "p"];
+  var aff = ["code", "cat", "nom", "resp", "brs", "s", "tp", "ects", "f", "p"];
   for(var i=0;i<aff.length;i++) {
     var content = uv[aff[i]];
     if (jQuery.isArray(content)) {
@@ -87,8 +87,8 @@ function uv_string(uv) {
     str += "<td class='"+ aff[i]+"'>"+ content +"</td>";
   }
   str += "<td class='note'>"+ compute_note(uv) +"</td>";
-  str += "<td><a target='_blank' href='https://assos.utc.fr/uvweb/uv/"+ uv["code"]+"'>ici</a></td>";
-  str += "<td class='more'><a data-to='"+  uv["code"] + "'href='#'>+</a></td></tr>";
+  str += "<td><a target='_blank' class='icon icon-study' href='https://assos.utc.fr/uvweb/uv/"+ uv["code"]+"'></a></td>";
+  str += "<td class='more'><a class='icon icon-eye' data-to='"+  uv["code"] + "'href='#'></a></td></tr>";
   return str;
 }
 
@@ -127,6 +127,8 @@ function filtre() {
   filters = filters.filter( function(n) {
     return n.value != ""
   });
+
+  
   
   for(var u in uvs) {
     var presence = true;
@@ -134,6 +136,7 @@ function filtre() {
       if (presence == false) {
         break;
       }
+
       presence = filtres[filters[f]["type"]](uvs[u], filters[f]);
     }
      if (presence) {
