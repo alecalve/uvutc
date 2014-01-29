@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}UV - UTC{% endblock %}
+{% block header %}
+
+<div class="top clearfix">
+  <span class="right"><a href="#">Connecté en tant que : {{user.username}}</a></span>
+  <span><a href="{% url 'index' %}" >Retour</a></span>
+</div> 
+{% endblock %}
+{% block content %}
+test
+{% endblock %}
+

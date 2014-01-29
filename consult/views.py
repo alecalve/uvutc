@@ -8,5 +8,5 @@ def index(request):
     return render(request, 'consult/index.html', locals())
 
 @login_required
-def uv(request, code):
-    return render(request, 'consult/uv.html', locals())
+def help(request):
+    return render(request, 'consult/help.html', locals())
