@@ -64,6 +64,10 @@ tr:hover > td.bad {
   background: rgba(255, 255, 0, 0.5);
 }
 
+#titre {
+  margin-left: 5px;
+}
+
 .bad {
   background: rgba(255, 255, 0, 0.6);
 }
@@ -85,6 +89,10 @@ tr:hover > td.ugly {
 
 .bar.ugly {
   fill: rgba(255, 0, 0, 0.6);
+}
+
+.ndipl {
+  color: red;
 }
 
 body {

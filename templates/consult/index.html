@@ -5,10 +5,11 @@
   <span class="main"><a href="#" class="filter" data-to="places" data-name="effectif">Filtre effectif : <i>supérieur à</i></a></span>
   <span class="main"><a href="#" class="filter" data-to="note" data-name="note">Filtre note : <i>supérieur à</i></a></span>
   <span class="main"><a href="#" id="nb"></a></span>
-  <span class="aux" id="close"><a href="#">Fermer</a></span>
+  <span class="aux" id="close"><a class="ugly" href="#">Fermer</a></span>
   <span class="aux" id="titre"></span>
   <span class="right"><a href="#" id="trigger">Connecté en tant que : {{user.username}}</a></span>
-</div>
+  <span class="right"><a class="good" href="{% url 'help' %}"><b>Aide</b></a></span>
+</div> 
 {% endblock %}
 {% block content %}
 <div class="block table block100" id="main">
@@ -19,7 +20,7 @@
         <th><input class="table-input" data-filter="cat" type="search" placeholder="Type" value=""></th>
         <th><input class="table-input" data-filter="nom" type="search" placeholder="Nom" value=""></th>
         <th><input class="table-input" data-filter="resp" type="search" placeholder="Responsable" value=""></th>
-        <th><input class="table-input" data-filter="brs" data-type="array" type="search" placeholder="Branche" value=""></th>
+        <th><input class="table-input" data-filter="brs" data-type="object" type="search" placeholder="Branche" value=""></th>
         <th><input class="table-input" data-filter="s" data-type="array" type="search" placeholder="Enseignée en" value=""></th>
         <th><input class="table-input" data-filter="tp" type="search" placeholder="TP" value=""></th>
         <th><input class="table-input" data-filter="ects" type="search" placeholder="Crédits" value=""></th>
