@@ -49,16 +49,16 @@ def parse(data, uvs):
     fields["uv"] = questions[0][0]
     if fields["uv"] not in uvs:
         return None
-    fields["reponses"] = questions[0][2]
+    fields["r"] = questions[0][2]
     fields["clarte"] = round(note(questions[0]), 2)
-    fields["prerequis"] = round(note(questions[1]), 2)
+    fields["prereq"] = round(note(questions[1]), 2)
     fields["equipe"] = round(note(questions[2]), 2)
-    fields["coherence"] = round(note(questions[3]), 2)
-    fields["supports"] = round(note(questions[4]), 2)
+    fields["cohe"] = round(note(questions[3]), 2)
+    fields["supp"] = round(note(questions[4]), 2)
     fields["moyens"] = round(note(questions[5]), 2)
-    fields["evaluation"] = round(note(questions[6]), 2)
-    fields["travail"] = round(note(questions[7]), 2)
-    fields["appreciation"] = round(note(questions[8]), 2)
+    fields["eval"] = round(note(questions[6]), 2)
+    fields["t"] = round(note(questions[7]), 2)
+    fields["appr"] = round(note(questions[8]), 2)
     return fields
         
 def comp_semestre(x, y):
@@ -86,6 +86,6 @@ def parse_evals(uvs, directory):
         for uv in chunk(data, 9):
             ev = parse(uv, uvs)
             if ev is not None:
-                ev["semestre"] = semestre
+                ev["s"] = semestre
                 evals.append(ev)
     return evals

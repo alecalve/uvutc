@@ -14,7 +14,7 @@ def getevals(uv):
     return [evaluation for evaluation in evals if evaluation["uv"] == uv]
             
 for uv in uvs:
-    uvs[uv]["evaluations"] = getevals(uv)
+    uvs[uv]["evals"] = getevals(uv)
 
 with codecs.open(sys.argv[3], "w") as f:
     f.write("var uvs = " + json.dumps(uvs) + ";")
