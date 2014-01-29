@@ -29,6 +29,15 @@ var filtres = {
     return false;
   },
 
+  "object": function(uv, filtre) {
+    var arr = [];
+    for (var key in uv[filtre["item"]]) {
+      arr.push(key);
+    }
+    var u = {"brs" : arr};
+    return filtres["array"](u , filtre);
+  },
+
   "number": function(uv, filtre) {
     var n;
     if (filtre["item"] == "note") {
@@ -80,8 +89,20 @@ function uv_string(uv) {
   var aff = ["code", "cat", "nom", "resp", "brs", "s", "tp", "ects", "f", "p"];
   for(var i=0;i<aff.length;i++) {
     var content = uv[aff[i]];
-    if (jQuery.isArray(content)) {
-      content = content.join(" ");
+    
+    if (jQuery.isArray(uv[aff[i]])) {
+      content = uv[aff[i]].join(" ");
+    }
+    
+    if (jQuery.isPlainObject(uv[aff[i]])) {
+      content = "";
+      for(var key in uv[aff[i]]) {
+        if (uv[aff[i]][key]) {
+          content += key + " ";
+        } else {
+          content += "<span class='ndipl'>" + key + "</span> ";
+        }
+      }
     }
       
     str += "<td class='"+ aff[i]+"'>"+ content +"</td>";
@@ -166,6 +187,7 @@ function getEvals(data, item) {
   for (var i in evals) {
     appreciations[appreciations.length] = {"note": evals[i][item], "semestre": evals[i]["s"]};
   }
+  console.log(appreciations);
   return appreciations.sort(sortBySemestre);
 }
 
