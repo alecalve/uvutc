@@ -168,9 +168,39 @@ a:hover, a:focus {
   letter-spacing: 0.1em;
 }
 
+[data-tooltip]{
+    position:relative;
+    border-bottom:1px dashed #ccc;
+}
+[data-tooltip]:before{
+    content:attr(data-tooltip);
+    position:absolute;
+    bottom:110%;
+    padding:10px;
+    background:#666;
+    opacity:0;
+    color:white;
+    font-size:smaller;
+    -webkit-transition:opacity 1s ease;
+    -o-transition:opacity 1s ease;
+    transition:opacity 1s ease;
+    pointer-events:none;
+}
+[data-tooltip]:hover:before{
+    opacity:1;
+}
+
+
 .top a:hover {
   background: rgba(255,255,255,0.95);
   color: #333;
+}
+
+a.display {
+  text-decoration: underline;
+  color: inherit;
+  outline: inherit;
+
 }
 
 .top span.right {
@@ -198,6 +228,12 @@ a:hover, a:focus {
   text-align: center;
   margin-left: auto ;
   margin-right: auto ;
+}
+
+.block-justify {
+  text-align: justify;
+  margin: 0 auto;
+  width: 30em;
 }
 
 .block p {

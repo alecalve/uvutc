@@ -65,7 +65,7 @@ function compute_note(uv) {
     note += parseInt(e["r"])*parseFloat(e["appr"]);
   }
 
-  return (note/nbe).toFixed(2) + " (" + nbe + ")";
+  return (note/nbe).toFixed(2) + " <span data-tooltip='Nombre d’évaluations constatées'>(" + nbe + ")</span>";
 }
 
 function updateNoteColor () {
@@ -100,7 +100,7 @@ function uv_string(uv) {
         if (uv[aff[i]][key]) {
           content += key + " ";
         } else {
-          content += "<span class='ndipl'>" + key + "</span> ";
+          content += "<span data-tooltip='non diplômant'>" + key + "</span> ";
         }
       }
     }
