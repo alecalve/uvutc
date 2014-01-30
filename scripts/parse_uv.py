@@ -27,6 +27,7 @@ def parse_uv(directory):
                 fields['tp'] = "oui" if float(cells[8].text.replace("-", "0").replace(",", ".")) else "non"
                 fields['f'] = "oui" if cells[9].text == 'Oui' else "non"
                 fields['cat'] = cells[10].text
+                fields['id_deme'] = uv["onclick"][12:].split(")")[0]
                 fields['resp'] = cells[11].text
                 fields['brs'] = {branche : dipl}
                 fields['s'] = [semestre]
