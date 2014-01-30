@@ -18,7 +18,6 @@ function getEvals(data, item) {
   for (var i in evals) {
     appreciations[appreciations.length] = {"note": evals[i][item], "semestre": evals[i]["s"]};
   }
-  console.log(appreciations);
   return appreciations.sort(sortBySemestre);
 }
 
