@@ -85,8 +85,22 @@ function updateNoteColor () {
 }
 
 function uv_string(uv) {
+
+  var specs = {
+      "GB": "193",
+      "GI": "195",
+      "GM": "196",
+      "GP": "194",
+      "GSM": "197", 
+      "GSU": "198",
+      "TC": "225",
+      "LICENSE": "304",
+      "HU": "322"
+  }
   var str = "<tr class="+ uv["cat"].toLowerCase() +">";
   var aff = ["code", "cat", "nom", "resp", "brs", "s", "tp", "ects", "f", "p"];
+  var spec;
+  
   for(var i=0;i<aff.length;i++) {
     var content = uv[aff[i]];
     
@@ -97,7 +111,11 @@ function uv_string(uv) {
     if (jQuery.isPlainObject(uv[aff[i]])) {
       content = "";
       for(var key in uv[aff[i]]) {
+        
         if (uv[aff[i]][key]) {
+          if (specs[key] && !spec) {
+            spec = specs[key];
+          }
           content += key + " ";
         } else {
           content += "<span data-tooltip='non diplômant'>" + key + "</span> ";
@@ -109,7 +127,13 @@ function uv_string(uv) {
   }
   str += "<td class='note'>"+ compute_note(uv) +"</td>";
   str += "<td><a target='_blank' class='icon icon-study' href='https://assos.utc.fr/uvweb/uv/"+ uv["code"]+"'></a></td>";
-  str += "<td class='more'><a class='icon icon-eye' data-to='"+  uv["code"] + "'href='#'></a></td></tr>";
+  if (spec) {
+    var date = (jQuery.inArray("automne", uv["s"])) ? "201303" : "201301";
+    str += "<td class='demeter'><a class='icon icon-eye' data-date='"+ date + "' data-spec='" + spec + "' data-id='"+  uv["id_deme"] + "' href='#'></a></td>";
+  } else {
+    str += "<td class='demeter'><span class='icon-ugly icon icon-lock'></span></td>";
+  }
+  str += "<td class='more'><a class='icon icon-note' data-to='"+  uv["code"] + "' href='#'></a></td></tr>";
   return str;
 }
 

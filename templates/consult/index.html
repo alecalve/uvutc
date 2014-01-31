@@ -31,6 +31,7 @@
         <th><input class="table-input" id="places" data-filter="p" data-comp="sup" data-type="number" type="search" placeholder="Effectif" value=""></th>
         <th><input class="table-input" id="note" data-filter="note" data-type="number" data-comp="sup" type="search" placeholder="Note/20" value=""></th>
         <th>UVWeb</th>
+        <th>Demeter</th>
         <th>Stats</th>
       </tr>
     </thead>
@@ -112,6 +113,71 @@
     $(".aux").show();
   });
 
+  $(document).on('click', ".demeter a", function() {
+     $('<form />')
+    .hide()
+    .attr({ method : "post" })
+    .attr({ action : "https://demeter.utc.fr/pls/portal30/ENSEIGNEMENT.CONSULTATION_ENSEIG_DYN.show"})
+    .append($('<input />')
+      .attr("type","hidden")
+      .attr({ "name" : "p_arg_names" })
+      .val("p_action"))
+    .append($('<input />')
+      .attr("type","hidden")
+      .attr({ "name" : "p_arg_values" })
+      .val("1"))
+    .append($('<input />')
+      .attr("type","hidden")
+      .attr({ "name" : "p_arg_names" })
+      .val("p_offre"))
+    .append($('<input />')
+      .attr("type","hidden")
+      .attr({ "name" : "p_arg_values" })
+      .val($(this).data("id")))
+    .append($('<input />')
+      .attr("type","hidden")
+      .attr({ "name" : "p_arg_names" })
+      .val("p_langue"))
+    .append($('<input />')
+      .attr("type","hidden")
+      .attr({ "name" : "p_arg_values" })
+      .val("FR"))
+    .append($('<input />')
+      .attr("type","hidden")
+      .attr({ "name" : "p_arg_names" })
+      .val("p_aff"))
+    .append($('<input />')
+      .attr("type","hidden")
+      .attr({ "name" : "p_arg_values" })
+      .val("TAB"))
+    .append($('<input />')
+      .attr("type","hidden")
+      .attr({ "name" : "p_arg_names" })
+      .val("p_periode"))
+    .append($('<input />')
+      .attr("type","hidden")
+      .attr({ "name" : "p_arg_values" })
+      .val($(this).data("date")))
+    .append($('<input />')
+      .attr("type","hidden")
+      .attr({ "name" : "p_arg_names" })
+      .val("p_diplome"))
+    .append($('<input />')
+      .attr("type","hidden")
+      .attr({ "name" : "p_arg_values" })
+      .val("ING"))
+    .append($('<input />')
+      .attr("type","hidden")
+      .attr({ "name" : "p_arg_names" })
+      .val("p_spec"))
+    .append($('<input />')
+      .attr("type","hidden")
+      .attr({ "name" : "p_arg_values" })
+      .val($(this).data("spec")))
+    .append('<input type="submit" />')
+    .appendTo($("body"))
+    .submit();
+  });
 
   </script>
 {% endblock %}
