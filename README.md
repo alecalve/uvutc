@@ -12,7 +12,6 @@ Liste des enseignements de l’UTC avec jQuery, porté par django
 
 ##Améliorations
 
- - [ ] Lien vers le site (description, prérequis) de l’UV
  - [ ] Améliorer le javascript (lisibilité et clarté)
  - [ ] Filières des UVs
  - [ ] Différentier les effectifs et responsables selon automne ou printemps
