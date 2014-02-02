@@ -10,3 +10,7 @@ def index(request):
 @login_required
 def help(request):
     return render(request, 'consult/help.html', locals())
+
+@login_required
+def demeter(request, num, spec, date):
+    return render(request, 'demeter.html', locals())

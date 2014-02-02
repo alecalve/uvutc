@@ -129,8 +129,8 @@ function uv_string(uv) {
   str += "<td><a target='_blank' class='icon icon-study' href='https://assos.utc.fr/uvweb/uv/"+ uv["code"]+"'></a></td>";
   if (spec) {
     var date = (jQuery.inArray("automne", uv["s"])) ? "201303" : "201301";
-    str += "<td class='demeter'><a class='icon icon-eye' data-date='"+ date + "' data-spec='" + spec + "' data-id='"+  uv["id_deme"] + "' href='#'></a></td>";
-  } else {
+    str += "<td class='demeter'><a class='icon icon-eye' target='_blank' href='/"+ uv["id_deme"] + "/" + spec + "/" + date + "/" + "'></a></td>";
+  } else { 
     str += "<td class='demeter'><span class='icon-ugly icon icon-lock'></span></td>";
   }
   str += "<td class='more'><a class='icon icon-note' data-to='"+  uv["code"] + "' href='#'></a></td></tr>";
